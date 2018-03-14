@@ -69,7 +69,7 @@ app.layout = html.Div([
 
 
 @app.callback(Output('wind-speed', 'figure'), [Input('wind-speed-update', 'n_intervals')])
-def gen_wind_speed():
+def gen_wind_speed(interval):
     now = dt.datetime.now()
     sec = now.second
     minute = now.minute
@@ -129,7 +129,7 @@ def gen_wind_speed():
 
 
 @app.callback(Output('wind-direction', 'figure'), [Input('wind-speed-update', 'n_intervals')])
-def gen_wind_direction():
+def gen_wind_direction(interval):
     now = dt.datetime.now()
     sec = now.second
     minute = now.minute
@@ -140,49 +140,63 @@ def gen_wind_direction():
     con = sqlite3.connect("./Data/wind-data.db")
     df = pd.read_sql_query("SELECT * from Wind where rowid = " +
                                          str(total_time) + ";", con)
-
     val = df['Speed'].iloc[-1]
+    direction = [0, (df['Direction'][0]-20), (df['Direction'][0]+20), 0]
 
-    trace = Area(
-        r=np.full(5, val),
-        t=np.full(5, df['Direction']),
-        marker=Marker(
-            color='rgb(242, 196, 247)'
+    trace = Scatterpolar(
+        r=[0, val, val, 0],
+        theta=direction,
+        mode='lines',
+        fill='toself',
+        fillcolor='rgb(242, 196, 247)',
+        line=dict(
+            color='rgba(32, 32, 32, .6)',
+            width=1
         )
     )
-    trace1 = Area(
-        r=np.full(5, val*0.65),
-        t=np.full(5, df['Direction']),
-        marker=Marker(
-            color='#F6D7F9'
+    trace1 = Scatterpolar(
+        r=[0, val*0.65, val*0.65, 0],
+        theta=direction,
+        mode='lines',
+        fill='toself',
+        fillcolor='#F6D7F9',
+        line=dict(
+            color = 'rgba(32, 32, 32, .6)',
+            width = 1
         )
     )
-    trace2 = Area(
-        r=np.full(5, val*0.30),
-        t=np.full(5, df['Direction']),
-        marker=Marker(
-            color='#FAEBFC'
+    trace2 = Scatterpolar(
+        r=[0, val*0.3, val*0.3, 0],
+        theta=direction,
+        mode='lines',
+        fill='toself',
+        fillcolor='#FAEBFC',
+        line=dict(
+            color='rgba(32, 32, 32, .6)',
+            width=1
         )
     )
+
     layout = Layout(
         autosize=True,
         width=275,
-        plot_bgcolor='#F2F2F2',
         margin=Margin(
             t=10,
             b=10,
             r=30,
             l=40
         ),
+        polar=dict(
+            bgcolor='#F2F2F2',
+            radialaxis=dict(range=[0, 45],
+                            angle=45,
+                            dtick=10),
+            angularaxis=dict(
+                showline=False,
+                tickcolor='white',
+            )
+        ),
         showlegend=False,
-        radialaxis=dict(
-            range=[0, max(max(df['Speed']), 40)]
-        ),
-        angularaxis=dict(
-            showline=False,
-            tickcolor='white'
-        ),
-        orientation=270,
     )
 
     return Figure(data=[trace, trace1, trace2], layout=layout)
@@ -193,7 +207,7 @@ def gen_wind_direction():
               [State('wind-speed', 'figure'),
                State('bin-slider', 'value'),
                State('bin-auto', 'values')])
-def gen_wind_histogram(wind_speed_figure, sliderValue, auto_state):
+def gen_wind_histogram(interval, wind_speed_figure, sliderValue, auto_state):
     wind_val = []
 
     # Check to see whether wind-speed has been plotted yet
