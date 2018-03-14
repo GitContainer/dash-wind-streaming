@@ -146,21 +146,21 @@ def gen_wind_direction(interval):
     trace = Scatterpolar(
         r=[0, val, val, 0],
         theta=direction,
-        mode = 'lines',
-        fill = 'toself',
-        fillcolor = 'rgb(242, 196, 247)',
-        line =  dict(
-            color = 'rgba(32, 32, 32, .6)',
-            width = 1
+        mode='lines',
+        fill='toself',
+        fillcolor='rgb(242, 196, 247)',
+        line=dict(
+            color='rgba(32, 32, 32, .6)',
+            width=1
         )
     )
     trace1 = Scatterpolar(
         r=[0, val*0.65, val*0.65, 0],
         theta=direction,
-        mode = 'lines',
-        fill = 'toself',
-        fillcolor = '#F6D7F9',
-        line =  dict(
+        mode='lines',
+        fill='toself',
+        fillcolor='#F6D7F9',
+        line=dict(
             color = 'rgba(32, 32, 32, .6)',
             width = 1
         )
@@ -168,12 +168,12 @@ def gen_wind_direction(interval):
     trace2 = Scatterpolar(
         r=[0, val*0.3, val*0.3, 0],
         theta=direction,
-        mode = 'lines',
-        fill = 'toself',
-        fillcolor = '#FAEBFC',
-        line =  dict(
-            color = 'rgba(32, 32, 32, .6)',
-            width = 1
+        mode='lines',
+        fill='toself',
+        fillcolor='#FAEBFC',
+        line=dict(
+            color='rgba(32, 32, 32, .6)',
+            width=1
         )
     )
 
