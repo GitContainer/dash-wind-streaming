@@ -12,7 +12,15 @@ import os
 import sqlite3
 import datetime as dt
 
-app = dash.Dash('streaming-wind-app')
+external_css = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
+                "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
+                "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"]
+
+
+app = dash.Dash(
+    'streaming-wind-app',
+    external_stylesheets=external_css
+)
 server = app.server
 
 app.layout = html.Div([
@@ -355,21 +363,6 @@ def deselect_auto(autoValue, sliderValue):
         return '# of Bins: Auto'
     else:
         return '# of Bins: ' + str(int(sliderValue))
-
-
-external_css = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-                "https://cdn.rawgit.com/plotly/dash-app-stylesheets/737dc4ab11f7a1a8d6b5645d26f69133d97062ae/dash-wind-streaming.css",
-                "https://fonts.googleapis.com/css?family=Raleway:400,400i,700,700i",
-                "https://fonts.googleapis.com/css?family=Product+Sans:400,400i,700,700i"]
-
-
-for css in external_css:
-    app.css.append_css({"external_url": css})
-
-if 'DYNO' in os.environ:
-    app.scripts.append_script({
-        'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
-    })
 
 if __name__ == '__main__':
     app.run_server()
