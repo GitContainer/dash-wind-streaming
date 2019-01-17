@@ -7,7 +7,7 @@ This app queries a SQL database every second and uses the data to update the win
 
 The wind speed values are then binned in real time to generate the wind histogram plot.
 
-This app is hosted [here](https://dash-wind-streaming.herokuapp.com/dash/gallery/live-wind-data/)
+This app is hosted [here](https://dash-gallery.plotly.host/dash-wind-stream)
 
 This is a demo of the Dash interactive Python framework developed by [Plotly](https://plot.ly/).
 
